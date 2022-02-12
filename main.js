@@ -111,7 +111,9 @@ class Bubble {
         this.speed = Math.random() * 5 + 1;
         //to keep track between each individual bubble and player
         this.distance;
-        this.counted =false
+        this.counted =false;
+        //adding sound to game.use the itenary operator and set conditions
+        this.sound = Math.random() <= 0.5 ? 'soundA' : 'sound2'
     }
     // create collision detection methods between two circles (bubble and player )
     update(){
@@ -132,11 +134,18 @@ class Bubble {
         ctx.stroke();
     }
 }
+const bubSound1 = document.createElement('audio');
+bubSound1.src = 'sounds/mixkit-water-bubble-1317';
+
+const bubSound2 = document.createElement('audio');
+bubSound1.src = 'sounds/bubbles-single1.wav';
+
+
 function bubHandler(){
     //the following adds a bubble at each 50th count to the array bubbleArray
     if(gameFrame % 50 == 0){
         bubbleArray.push(new Bubble());
-        console.log(bubbleArray.length)
+        // console.log(bubbleArray.length)
         //checks the console to see the increment of length each time
     }
     for (let i = 0; i < bubbleArray.length; i++){
@@ -149,8 +158,13 @@ function bubHandler(){
             bubbleArray.splice(i, 1);
         }// below is a mathematical formular for detecting colllision of two circles
         if (bubbleArray[i].distance < bubbleArray[i].radius + player.radius){
-            console.log('collision');// increase score by one each time there is coollision.  go back to class buble and add this.counted and set to true. After thatthe condition will be as follows
+            // console.log('collision');// increase score by one each time there is coollision.  go back to class buble and add this.counted and set to true. After thatthe condition will be as follows
             if(!bubbleArray[i].counted){
+                if (bubbleArray[i].sound == 'soundA'){
+                    bubSound1.play();
+                }else{
+                    bubSound2.play();
+                }
                 score++
                 bubbleArray[i].counted = true;
                 //call the splice method to remove what ever colides with the circle while its counted.

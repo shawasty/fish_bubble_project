@@ -64,10 +64,10 @@ class Player {
         const distanceY = this.y - mouse.y;
         //create an if statement and equate to distanceX &Y / 30 toprevent animation from being too fast
         if(mouse.x != this.x){
-            this.x -= distanceX/20;
+            this.x -= distanceX/15;
         }
         if(mouse.y != this.y){
-            this.y -= distanceY/20;
+            this.y -= distanceY/15;
         }
 
     }
@@ -111,12 +111,17 @@ class Bubble {
         this.speed = Math.random() * 5 + 1;
         //to keep track between each individual bubble and player
         this.distance;
+        this.counted =false
     }
     // create collision detection methods between two circles (bubble and player )
     update(){
         //use the following to move the bubbles up in the direction of the y axis
         this.y -= this.speed; 
-        //This makes the bubbles move at custom speed differently
+        //This makes the bubbles move at custom speed differently (NB: read about circle collision js and use the fomula as shown below)
+        const distanceX = this.x - player.x;
+        const distanceY = this.y -player.y;
+        //this is used to detect circle collision
+        this.distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
     }
     draw(){
         ctx.fillStyle = '#3297a8';
@@ -142,9 +147,20 @@ function bubHandler(){
         // added - this.radius * 2 to the initial to avoid the bubbles from disappearing early.
         if (bubbleArray[i].y < 0 - bubbleArray[i].radius * 2){
             bubbleArray.splice(i, 1);
-        }
+        }// below is a mathematical formular for detecting colllision of two circles
         if (bubbleArray[i].distance < bubbleArray[i].radius + player.radius){
-            console,log('collision');
+            console.log('collision');// increase score by one each time there is coollision.  go back to class buble and add this.counted and set to true. After thatthe condition will be as follows
+            if(!bubbleArray[i].counted){
+                score++
+                bubbleArray[i].counted = true;
+                //call the splice method to remove what ever colides with the circle while its counted.
+                bubbleArray.splice(i , 1);
+            }
+
+           
+            
+          
+
         }
 
     }
@@ -158,7 +174,7 @@ function animate(){
     player.update()
     player.draw();
     ctx.fillStyle = 'black'
-    ctx.fillText(`score: ${score}`, 10,40);
+    ctx.fillText(`shawasty: ${score}`, 10,40);
     //the original gameFrame was set to 0, set to increase gradually and use it to add periodic event to the game
     gameFrame++
     // console.log(gameFrame)

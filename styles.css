@@ -1,0 +1,26 @@
+/* Make sure all pages are the same in all browsers  */
+*{
+    margin: 0; 
+    padding: 0;
+    box-sizing: border-box;
+}
+/* center html elements both horizontally and vertically to cover entire screen */
+body{
+    width: 100vw; 
+    height: 100vh;
+    display:flex;
+    /* Give additional property of body since it has a flex property*/
+    justify-content: center;
+    /* Aligns the whole game body to the center position */
+    align-items: center;
+}
+#canvas1{
+    width: 850px;
+    height: 470px;
+    /* Outline the project space with the border property */
+    border: 4px solid black;
+
+}
+header{
+    color: rgb(241, 6, 53);
+}

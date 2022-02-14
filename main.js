@@ -34,12 +34,15 @@ canvas.addEventListener("mouseup", function () {
 });
 // player
 //contructor will contain blueprint of all player object
-
+const playerLeft = new Image();
+playerLeft.src ='images/fish_swim_left.png';
+const playerRight = new Image();
+playerRight.src ='images/fish_swim_right.png';   // download sprite sheet and turn it upside down
 class Player {
   constructor() {
     // set innitial coordinates for player before mouse starts moving
     this.x = canvas.width;
-    this.y = canvas.height / 2;
+    this.y = canvas.height  /2;
     //set radius to 50 because of how to position canvas and angle to 0
     this.radius = 40;
     this.angle = 0;
@@ -58,6 +61,8 @@ class Player {
     //create in such a way that the mouse and player distance coincide
     const distanceX = this.x - mouse.x;
     const distanceY = this.y - mouse.y;
+    let theta = Math.atan2(distanceY,distanceX)
+    this.angle = theta;
     //create an if statement and equate to distanceX &Y / 30 toprevent animation from being too fast
     if (mouse.x != this.x) {
       this.x -= distanceX / 15;
@@ -85,6 +90,21 @@ class Player {
     // call ctx.fill() to draw the circle
     ctx.fill();
     ctx.closePath();
+    ctx.fillRect(this.x,this.y,this.radius,10);
+// to rotate the fish?
+    ctx.save(); //to safe canvas current position
+    ctx.translate(this.x, this.y); // to move the the circle current position towrds , go to drawImage to chage this.y and this.x to 
+    ctx.rotate(this.angle);
+    if(this.x >= mouse.x){
+        // ctx.drawImage(playerLeft, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth,this.spriteHeight, this.x-60, this.y-40, this.spriteWidth/4 , this.spriteHeight/4);  // check property on line
+        ctx.drawImage(playerLeft, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth,this.spriteHeight, 0 - 60, 0 - 45, this.spriteWidth/4 , this.spriteHeight/4); 
+
+    }else{
+        // ctx.drawImage(playerRight, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth,this.spriteHeight, this.x-60, this.y-40, this.spriteWidth/4 , this.spriteHeight/4);  // check property on line
+        ctx.drawImage(playerRight, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth,this.spriteHeight, 0 - 60, 0 - 45, this.spriteWidth/4 , this.spriteHeight/4)
+    }
+
+    ctx.restore();
   }
 }
 //create the player by using the new keyword.

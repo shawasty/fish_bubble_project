@@ -35,9 +35,9 @@ canvas.addEventListener("mouseup", function () {
 // player
 //contructor will contain blueprint of all player object
 const playerLeft = new Image();
-playerLeft.src ='images/fish_swim_left.png';
+playerLeft.src ='images/fish_swim_left1.png';
 const playerRight = new Image();
-playerRight.src ='images/fish_swim_right.png';   // download sprite sheet and turn it upside down
+playerRight.src ='images/fish_swim_right1.png';   // download sprite sheet and turn it upside down
 class Player {
   constructor() {
     // set innitial coordinates for player before mouse starts moving
@@ -149,10 +149,10 @@ class Bubble {
   }
 }
 const bubSound2 = document.createElement("audio");
-bubSound2.src = "sounds/bubble2.wav";
+// bubSound2.src = "sounds/bubble2.wav";
 
 const bubSound1 = document.createElement("audio");
-bubSound1.src = "sounds/bubbl1.wav";
+// bubSound1.src = "sounds/bubbl1.wav";
 
 function bubHandler() {
   //the following adds a bubble at each 50th count to the array bubbleArray
@@ -201,3 +201,8 @@ function animate() {
   requestAnimationFrame(animate);
 }
 animate();
+
+window.addEventListener('resize',function(){
+  canvasPosition = canvas.getBoundingClientRect();
+
+})

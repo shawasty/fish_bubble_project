@@ -12,6 +12,7 @@ let score = 0;
 let gameFrame = 0;
 ctx.font = "40px Geneva";
 let gameSpeed = 1;  // this is global in case the speed needs to be increased slowly
+let gameOver = false;
 
 //Mouse Interactivity
 // set cordinates for moving mouse vertically and horizontally around the screen (x and Y coordinates), make an object
@@ -84,14 +85,14 @@ class Player {
       ctx.stroke();
     }
     //draw a circle to represent player character, check for method online
-    ctx.fillStyle = "#ad3a13";
-    ctx.beginPath();
-    //
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    // call ctx.fill() to draw the circle
-    ctx.fill();
-    ctx.closePath();
-    ctx.fillRect(this.x,this.y,this.radius,10);
+    // ctx.fillStyle = "#ad3a13";
+    // ctx.beginPath();
+    // //
+    // ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    // // call ctx.fill() to draw the circle
+    // ctx.fill();
+    // ctx.closePath();
+    // ctx.fillRect(this.x,this.y,this.radius,10);
 // to rotate the fish?
     ctx.save(); //to safe canvas current position
     ctx.translate(this.x, this.y); // to move the the circle current position towrds , go to drawImage to chage this.y and this.x to 
@@ -154,10 +155,10 @@ class Bubble {
   }
 }
 const bubSound2 = document.createElement("audio");
-// bubSound2.src = "sounds/bubble2.wav";
+bubSound2.src = "sounds/bubble2.wav";
 
 const bubSound1 = document.createElement("audio");
-// bubSound1.src = "sounds/bubbl1.wav";
+bubSound1.src = "sounds/bubbl1.wav";
 
 function bubHandler() {
   //the following adds a bubble at each 50th count to the array bubbleArray
@@ -229,10 +230,10 @@ class Enemy{
     this.spriteHeight = 397;
   }
   draw(){
-    ctx.fillStyle = 'yellow';
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fill();
+    // ctx.fillStyle = 'yellow';
+    // ctx.beginPath();
+    // ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    // ctx.fill();
     // the following crops the first of 12 fish on a sprite sheet
     ctx.drawImage(enemyImage, this.frameX * this.spriteWidth , this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight,this.x-65, this.y-70, this.spriteWidth/3, this.spriteHeight/3);
   }
@@ -257,13 +258,27 @@ class Enemy{
       else this.frameY = 0;
     }
     // collision with player
+    //the use of pythagoras theorem to determin the distance between two center 
+    //points of a circle and if it is 
+    const distX = this.x - player.x;
+    const distY = this.y - player.y;
+    const distance = Math.sqrt(distX * distX + distY * distY);
+    if (distance < this.radius + player.radius){
+      handleGameOver();
+    }
  
   }
 }
 const enemy1 = new Enemy();
 function enemiesHandler(){
-  enemy1.update();
   enemy1.draw();
+  enemy1.update();
+}
+
+function handleGameOver(){
+  ctx.fillStyle = 'red';
+  ctx.fillText('GAME OVER, your score is ' + score , 150 ,250)
+  gameOver = true;
 }
 
 
@@ -281,7 +296,10 @@ function animate() {
   gameFrame++;
   // console.log(gameFrame)
   //checks the frames generated endlessly , use that idea to create a hadnle for the bubbles.
-  requestAnimationFrame(animate);
+  if (!gameOver){
+    requestAnimationFrame(animate);
+  }
+  
 }
 animate();
 

@@ -11,6 +11,7 @@ canvas.height = 650;
 let score = 0;
 let gameFrame = 0;
 ctx.font = "40px Geneva";
+let gameSpeed = 1;  // this is global in case the speed needs to be increased slowly
 
 //Mouse Interactivity
 // set cordinates for moving mouse vertically and horizontally around the screen (x and Y coordinates), make an object
@@ -115,6 +116,8 @@ const player = new Player();
 
 //Bubbles
 const bubbleArray = [];
+const bubbleImage = new Image();
+bubbleImage.src = 'images/pop1.png';
 //create random bubbles
 class Bubble {
   constructor() {
@@ -140,12 +143,14 @@ class Bubble {
     this.distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
   }
   draw() {
-    ctx.fillStyle = "#3297a8";
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.closePath();
-    ctx.stroke();
+    // ctx.fillStyle = "#3297a8";
+    // ctx.beginPath();
+    // ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    // ctx.fill();
+    // ctx.closePath();
+    // ctx.stroke();
+    //the following inserts the bubble image
+    ctx.drawImage(bubbleImage, this.x -55, this.y-55,this.radius *2.8,this.radius *2.8);
   }
 }
 const bubSound2 = document.createElement("audio");
@@ -186,9 +191,30 @@ function bubHandler() {
     }
   }
 }
+// Repeating backgrounds
+const background = new Image()
+background.src = 'images/background1.png';
+// initialize background movement as follows
+const BG = {
+  x1: 0,
+  x2: canvas.width,
+  y:0,
+  width: canvas.width,
+  height: canvas.height
+}  // rplace the x value in ctx.drawImage(background, 0, 0, canvas.width, canvas.height) to BG
+
+function backgroudHandler(){
+  BG.x1-=gameSpeed;
+  if (BG.x1 < -BG.width) BG.x1 = BG.width;
+  BG.x2-=gameSpeed;
+  if (BG.x2 < -BG.width) BG.x2 = BG.width;
+  ctx.drawImage(background, BG.x1, BG.y, BG.width, BG.height);
+  ctx.drawImage(background, BG.x2, BG.y, BG.width, BG.height);
+}
 //Animation Loop
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  backgroudHandler()
   bubHandler();
   player.update();
   player.draw();

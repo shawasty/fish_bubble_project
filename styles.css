@@ -19,6 +19,8 @@ body{
     height: 650px;
     /* Outline the project space with the border property */
     border: 4px solid black;
+    background: linear-gradient(to bottom, lightblue ,lightblue,blue);
+    
 
 }
 header{
